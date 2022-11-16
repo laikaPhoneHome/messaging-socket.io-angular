@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { JoinComponent } from './join/join.component';
 import { ChatComponent } from './chat/chat.component';
+import { MessagesComponent } from './messages/messages.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ChatComponent } from './chat/chat.component';
     AppComponent,
     JoinComponent,
     ChatComponent,
+    MessagesComponent,
   ],
   imports: [
     BrowserModule,
