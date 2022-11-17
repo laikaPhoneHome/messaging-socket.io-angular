@@ -1,1 +1,6 @@
-<p>messages works!</p>
+<div class="message-box">
+    <div class="message" *ngFor="let msg of messageList" [ngClass]="{my: msg.my}">
+        <p>{{ msg.username }}</p>
+        <p>{{ msg.message }}</p>
+    </div>
+</div>

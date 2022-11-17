@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "server": "nodemon server.js"
+    "message-server": "nodemon server.js"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +23,8 @@
     "express": "^4.18.2",
     "nodemon": "^2.0.20",
     "rxjs": "~7.5.0",
+    "socket.io": "^4.5.3",
+    "socket.io-client": "^4.5.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

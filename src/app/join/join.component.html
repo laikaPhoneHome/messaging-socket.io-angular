@@ -1,10 +1,10 @@
-<div class="join-form">
-    <form #userForm="ngForm">
-        <label for="username">Username:</label>
+<div class="join">
+    <form class="join-form" #userForm="ngForm">
+        <label for="username">Username:  </label>
         <input required [(ngModel)]="model.username" class="username-input" type="text" name="username" id="username">
-        <select>
-            <option *ngFor="let room of rooms" [value]="room">{{room}}</option>
+        <select id="room">
+            <option class="room-options" *ngFor="let room of rooms" [value]="room">{{room}}</option>
         </select>
     </form>
-    <button (click)="onJoin()"></button>
+    <button  class="join-btn"(click)="onJoin()">JOIN</button>
 </div>
