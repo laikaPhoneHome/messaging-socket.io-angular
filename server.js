@@ -18,6 +18,9 @@ let userList = new Map();
 
 io.on('connection', socket => {
     let username = socket.handshake.query.username;
+    let room = socket.handshake.query.room;
+
+    socket.on('connect', ({username, room}))
     addUser(username, socket.id)
     socket.broadcast.emit(username)
     

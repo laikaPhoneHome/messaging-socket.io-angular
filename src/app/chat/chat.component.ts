@@ -34,7 +34,8 @@ export class ChatComponent implements OnInit {
       }
     })
     this.socket = io.io(`localhost:3000?username=${this.username}&room=${this.room}`)
-    this.socket.emit('set-user-name', this.username)
+    this.socket.emit('connect', {username:this.username, room:this.room})
+
     this.socket.on('user-list', (userlist: string[]) => {
       this.userList = userlist;
     })
