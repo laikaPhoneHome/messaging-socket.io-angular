@@ -1,6 +1,6 @@
-<div class="message-box">
+<div name="message-box" class="message-box" [style.scrollHeight]="scrollHeight">
     <div class="message" *ngFor="let msg of messageList" [ngClass]="{my: msg.my}">
-        <p>{{ msg.username }}</p>
+        <p><span>{{ msg.username }}</span></p>
         <p>{{ msg.message }}</p>
     </div>
 </div>
