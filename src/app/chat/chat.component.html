@@ -1,1 +1,15 @@
-<p>chat works!</p>
+<main class="container">
+    <section class="main-info">
+        <h2>{{ room }}</h2>
+    </section>
+    <div class="mid">
+        <!-- <section class="user-list">
+            <h3 *ngFor="let user of userList">{{ user }}</h3>
+        </section> -->
+        <app-messages [style.scrollHeight]="scrollHeight" [messageList]="messageList"></app-messages>
+    </div>
+    <div class="message-input">
+        <input type="text" [(ngModel)]="message">
+        <button (click)="sendMessage()">Send</button>
+    </div>
+</main>

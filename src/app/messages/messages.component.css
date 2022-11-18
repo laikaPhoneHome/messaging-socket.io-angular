@@ -1,0 +1,48 @@
+.message-box{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    padding: 1em;
+    width: 20.2em;
+    height: 32em;
+}
+.message{
+    min-width: 5em;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    padding: 0.5em;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    box-sizing: content-box;
+    border-radius: 10px;
+    margin:0.3em;
+    margin-bottom: 0.5em;
+    width: fit-content;
+    max-width: 12em;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.message-box > .my{
+    background-color: rgba(0, 106, 255, 0.717);
+    align-self: flex-end;
+    color: white;
+}
+.message > p {
+    box-sizing: content-box;
+    margin: 0.3em;
+    white-space: initial;
+    inline-size: 9em;
+    overflow-wrap: break-word;
+    max-width: fit-content;
+}
+.message > p span:after{
+    content: ":";
+}
+.message > p span{
+    color: black;
+    font-weight: 600;
+}
+.message-box > .my p span{
+    color: white;
+}

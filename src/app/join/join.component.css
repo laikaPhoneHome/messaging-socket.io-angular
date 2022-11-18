@@ -1,0 +1,31 @@
+.join{
+    border: solid black;
+    width: 50%;
+    height: 10em;
+    margin: auto;
+    margin-top: 10%;
+    display: flex;
+    justify-content: space-around;
+    padding: 5%;
+
+}
+.join-form > label{
+    font-size: 25px;
+}
+.username-input{
+    margin-bottom: 10%;
+
+}
+.join-form{
+    display: flex;
+    flex-direction: column;
+}
+.join > button{
+    height: 30%;
+    width: 3em;
+    background-color: rgba(0,0,0,0);
+    border: solid black;
+    border-radius:25px;
+    font-size: 40px;
+    margin-top: 3%;
+}
