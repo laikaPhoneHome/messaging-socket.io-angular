@@ -1,1 +1,1 @@
-{"roomDB":[{"roomName":"test","endDate":1668960100443,"members":[],"messageList":[{"username":"tester","message":"testing"}]}]}
+{"roomDB":[{"roomName":"test","endDate":1668960100443,"members":["tester"]}]}

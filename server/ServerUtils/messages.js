@@ -9,13 +9,23 @@ const timeStamp = [
     : 'pm'
 ].join('');
 
+exports.bot = '098050q8973451'
+
 exports.formatMessage = (({message, username}) => {
-    return({
-        "message": message,
-        "username": username,
-        "my": false,
-        "liked": false,
-        "bot": false,
-        "time": timeStamp,
-    })
+    if(username !== this.bot){
+        return({
+            message: message,
+            username: username,
+            my: false,
+            liked: false,
+            bot: false,
+            time: timeStamp,
+        })
+    } else {
+        return({
+            message: message,
+            bot: false,
+        })
+    }
+    
 })

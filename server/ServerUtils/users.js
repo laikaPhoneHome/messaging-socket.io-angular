@@ -1,7 +1,7 @@
-exports.userList = new Map();
+// exports.userList = new Map();
 
-exports.addUser = ((username, room, id) => {
-    const userInfo = {room, id};
+// exports.addUser = ((username, room, id) => {
+//     const userInfo = {room, id};
 
-    exports.userList.set(username, userInfo);
-})
+//     exports.userList.set(username, userInfo);
+// })

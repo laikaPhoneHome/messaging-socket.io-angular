@@ -97,7 +97,6 @@ exports.fetchUsersByRoom = (roomName) => {
         const members = [];
         db.roomDB.forEach((room) => {
             if(room.roomName === roomName){
-                console.log('pushing')
                 members.push(...room.members)
             }
         })
