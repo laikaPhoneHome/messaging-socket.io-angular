@@ -16,12 +16,20 @@ exports.fetchMessagesByRoom = (roomName) => {
     })
 }
 exports.insertMessage = (message, roomName) => {
-    const currentMessages =  exports.fetchMessagesByRoom(roomName)
-    currentMessages[roomName].push(message)
-    const messageString =  JSON.stringify(currentMessages)
-
-    fs.writeFile(`${dir}/message.db/${roomName}`, messageString)
+    fs.readFile(`${__dirname}/db/room.db.json`)
+    .then((data) => {
+        const db = JSON.parse(data)
+        db.roomDB.forEach((room) => {
+            if(room.roomName === roomName){
+                room.messageList.push(message)
+            }
+        })
+        const strDb = JSON.stringify(db)
+        fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
+    })
 }
+const testMessage = {username: 'tester', message: 'testing'}
+exports.insertMessage(testMessage, 'test')
 exports.insertRoom = (newRoom) => {
     const { roomName, endDate } = newRoom
 
