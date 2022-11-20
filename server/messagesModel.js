@@ -4,32 +4,39 @@ const fs = require('fs/promises')
 exports.selectRoom = (roomName) => {
     return fs.readFile(`${__dirname}/db/room.db.json`)
     .then((data) => {
-        const db = JSON.parse(data)
-        const room = db.roomDB.filter(rooms => rooms.roomName === roomName)
-        return room
+        const db = JSON.parse(data);
+        const room = db.roomDB.filter(rooms => rooms.roomName === roomName);
+        return room;
     })
 }
 exports.fetchMessagesByRoom = (roomName) => {
-    fs.readFile(`${dir}/message.db/${roomName}`)
+    return fs.readFile(`${__dirname}/db/room.db.json`)
     .then((data) => {
-        return JSON.parse(data)
-    })
-}
-exports.insertMessage = (message, roomName) => {
-    fs.readFile(`${__dirname}/db/room.db.json`)
-    .then((data) => {
-        const db = JSON.parse(data)
+        const db = JSON.parse(data);
+        const messages = [];
         db.roomDB.forEach((room) => {
             if(room.roomName === roomName){
-                room.messageList.push(message)
+                messages.push(...room.messageList);
             }
         })
-        const strDb = JSON.stringify(db)
-        fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
+        return messages;
+    })
+}
+exports.insertMessageByRoom = (message, roomName) => {
+    fs.readFile(`${__dirname}/db/room.db.json`)
+    .then((data) => {
+        const db = JSON.parse(data);
+        db.roomDB.forEach((room) => {
+            if(room.roomName === roomName){
+                room.messageList.push(message);
+            }
+        })
+        const strDb = JSON.stringify(db);
+        fs.writeFile(`${__dirname}/db/room.db.json`, strDb);
     })
 }
 exports.insertRoom = (newRoom) => {
-    const { roomName, endDate } = newRoom
+    const { roomName, endDate } = newRoom;
     let existing;
 
     const room = {
@@ -57,4 +64,17 @@ exports.insertRoom = (newRoom) => {
         }
     })
 }
-exports.insertRoom({roomName:'test',endDate: ''})
+exports.insertUserByRoom = (username, roomName) => {
+    fs.readFile(`${__dirname}/db/room.db.json`)
+    .then((data) => {
+        const db = JSON.parse(data)
+        db.roomDB.forEach((room) => {
+            if(room.roomName === roomName){
+                room.members.push(username)
+            }
+        })
+        const strDb = JSON.stringify(db)
+        fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
+    })
+}
+this.insertUserByRoom('tester', 'test')
