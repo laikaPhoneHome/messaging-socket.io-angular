@@ -1,7 +1,7 @@
 <main class="container" [ngClass]="{smokeScreen: 'container.smoke-screen'}">
     <!-- <div class="smoke-screen" (click)="view()" [ngStyle]="{'visibility': (smokeScreen) ? 'visible' : 'hidden'}"></div> -->
         <section class="main-info">
-            <h2>{{ room }}</h2><button (click)="view()" class="user-btn">Members</button>
+            <h2>{{ room.roomName }}</h2><button (click)="view()" class="user-btn">Members</button>
             <div class="user-list" [ngStyle]="{'visibility': (usersView) ? 'visible' : 'hidden'}">
                 <h3 *ngFor="let user of userList">{{ user }}</h3>
             </div>

@@ -46,11 +46,11 @@ app.get('/', (req ,res) => {
 
 io.on('connection', socket => {
     let username = socket.handshake.query.username;
-    let room = socket.handshake.query.room;
+    let roomName = socket.handshake.query.room;
     
-
     socket.on('join-room', ({username, room}) => {
         const { roomName, endDate} = room;
+        
         // confirm room exists
         insertRoom(room)
 
@@ -62,7 +62,7 @@ io.on('connection', socket => {
             formatMessage({
                 message:`${username} has joined the chat`, 
                 username: bot
-            }, roomName)
+            }),roomName
         )
 
         // update user's room member list
@@ -71,24 +71,31 @@ io.on('connection', socket => {
             io.emit('user-list', members);
         })
 
-        // send messagelist to user
-        fetchMessagesByRoom(roomName)
-        .then((messages) => {
-            io.emit('message-update', messages)
-        })
 
-        // emit user message
-        socket.on('user-message', ({msg, username}) => {
-            insertMessageByRoom(formatMessage(msg), roomName)
+        // send messagelist to user
+        setTimeout(() => {
+                fetchMessagesByRoom(roomName)
+            .then((messages) => {
+                io.emit('message-update', messages)
+            })
+        })
+        
+        
+    })
+    // emit user message
+    socket.on('user-message', (req) => {
+        setTimeout(() => {
+            insertMessageByRoom(formatMessage(req), roomName)
+        })
+    })
+    socket.on('user-message', () => {
+        setTimeout(() => {
             fetchMessagesByRoom(roomName)
             .then((messages) => {
                 io.emit('message-update', messages)
             })
         })
-
-        
     })
-    
 })
 
 

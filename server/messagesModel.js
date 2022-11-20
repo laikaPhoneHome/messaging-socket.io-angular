@@ -91,7 +91,7 @@ exports.removeUserByRoom = (username, roomName) => {
     })
 }
 exports.fetchUsersByRoom = (roomName) => {
-    fs.readFile(`${__dirname}/db/room.db.json`)
+    return fs.readFile(`${__dirname}/db/room.db.json`)
     .then((data) => {
         const db = JSON.parse(data)
         const members = [];
@@ -100,6 +100,6 @@ exports.fetchUsersByRoom = (roomName) => {
                 members.push(...room.members)
             }
         })
-        return members
+        return members;
     })
 }

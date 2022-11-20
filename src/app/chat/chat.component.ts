@@ -73,11 +73,11 @@ export class ChatComponent implements OnInit {
       endDate: this.eventDate
     }
 
-    this.socket = io.io(`localhost:3000?username=${this.username}&room=${this.room}`)
+    this.socket = io.io(`localhost:3000?username=${this.username}&room=${this.room.roomName}`)
 
     this.socket.emit('connection')
 
-    this.socket.emit('join-chat', {username:this.username, room:this.room})
+    this.socket.emit('join-room', {username:this.username, room:this.room})
 
     this.socket.on('message-update',(currentMessages: any) => {
       this.messageList =  currentMessages.map((message:any) => {
