@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "message-server": "nodemon ./server/server.js"
+    "message-server": "nodemon ./server/messagesController.js"
   },
   "private": true,
   "dependencies": {

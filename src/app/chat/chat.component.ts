@@ -37,8 +37,17 @@ export class ChatComponent implements OnInit {
 
 
   username:string='';
-  room:string='';
+  roomName:string='';
+  eventDate: any;
+
   message: string='';
+  room: {
+    roomName: string;
+    endDate: any;
+  }={
+    roomName:'', 
+    endDate:''
+  }
 
   userList: string[]=[];
   socket: any;
@@ -54,20 +63,22 @@ export class ChatComponent implements OnInit {
       for(let key in params){
         key === 'user' 
         ? this.username = params[key] 
-        : this.room = params[key];
+        : key === 'room'
+        ? this.roomName = params[key]
+        : this.eventDate = params[key]
       }
     })
+    this.room = {
+      roomName: this.roomName,
+      endDate: this.eventDate
+    }
+
     this.socket = io.io(`localhost:3000?username=${this.username}&room=${this.room}`)
 
     this.socket.emit('connection')
+
     this.socket.emit('join-chat', {username:this.username, room:this.room})
 
-    this.socket.on('bot-message', (message: string) => {
-      this.messageList.push({
-        message: message,
-        bot: true,
-      })
-    })
     this.socket.on('message-update',(currentMessages: any) => {
       this.messageList =  currentMessages.map((message:any) => {
         if(message.username === this.username)
@@ -80,15 +91,6 @@ export class ChatComponent implements OnInit {
     this.socket.on('user-list', (userlist: string[]) => {
       this.userList = userlist;
     })
-    // this.socket.on('disconnect', (userlist: string[]) => {
-    //   this.userList = userlist;
-    // })
-
-    // this.socket.on('message-broadcast', (data: {message: {message: string, username: string}}) => {
-    //   if(data){
-    //     this.messageList.push({message: data.message.message, username: data.message.username, my: false})
-    //   }
-    // })
     
   }
 

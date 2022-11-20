@@ -34,17 +34,20 @@ const io = require('socket.io')(http,{
 app.get('/', (req ,res) => {
     fs.readFile(`${__dirname}/db/room.db.json`)
     .then((data) => {
-        if(data.roomDB){
-            'Server is up'
+        const db = JSON.parse(data)
+        if(db.roomDB){
+            res.status(200).send('Message server is up :)')
         } else {
-            'server is down'
+            res.status(500).send('Message server is down :(')
         }
     })
 })
 
+
 io.on('connection', socket => {
     let username = socket.handshake.query.username;
     let room = socket.handshake.query.room;
+    
 
     socket.on('join-room', ({username, room}) => {
         const { roomName, endDate} = room;
@@ -75,7 +78,7 @@ io.on('connection', socket => {
         })
 
         // emit user message
-        socket.on('user-message', (msg) => {
+        socket.on('user-message', ({msg, username}) => {
             insertMessageByRoom(formatMessage(msg), roomName)
             fetchMessagesByRoom(roomName)
             .then((messages) => {
