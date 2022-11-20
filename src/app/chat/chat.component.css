@@ -7,6 +7,7 @@
     display: flex;
     justify-content: center;
     border-bottom: solid blue;
+    justify-content: flex-end;
 }
 /* .user-list{
     border-right: dotted blue;
@@ -23,4 +24,25 @@
     justify-content: center;
     margin: 0.5em;
 }
-
+.user-list{
+    position: absolute;
+    margin:auto;
+    padding: 3em;
+    background-color: white;
+    z-index: 99;
+    right:0;
+    top:5em;
+}
+.smoke-screen{
+    background-color: rgba(67, 67, 67,.33);
+    position: absolute;
+    width:100%;
+    height: 110%;
+}
+.user-btn{
+    border-radius: 10px;
+    height: fit-content;
+    padding: 0.3em;
+    justify-self:baseline;
+    margin-left: 1em;
+}

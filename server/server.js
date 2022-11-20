@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs/promises');
 
 const { 
     addUser,
@@ -11,8 +12,6 @@ const {
 const { connect } = require('http2');
 
 const messageList = []
-
-console.log(messageList, 'top')
 
 const app = express();
 const http = require('http').createServer(app);
@@ -31,13 +30,6 @@ io.on('connection', socket => {
     let username = socket.handshake.query.username;
     let room = socket.handshake.query.room;
 
-    socket.on('user-message', (msg) => {
-        messageList.push(formatMessage(msg))
-        io.emit('message-update', messageList)
-    })
-
-    socket.emit('message-update', messageList)
-
     socket.on('join-chat', ({username, room}) => {
         // add user to chat list
         addUser(username, room, socket.id)
@@ -45,26 +37,19 @@ io.on('connection', socket => {
         // welcome user to chat
         socket.emit('bot-message', `Welcome to ${room}`)
 
-        messageList.push({
-            message: message,
-            bot: true,
-        })
-        
-
         // announce to chat user has joined
         socket.broadcast.emit('bot-message', `${username} has joined the chat`)
 
-        // send messagelist to user
-        socket.emit('message-update', messageList)
+        // update user list
+        io.emit('user-list', [...userList.keys()]);
 
         // emit user message
         socket.on('user-message', (msg) => {
-            // io.emit('message', formatMessage(msg))
-            console.log('message')
-            console.log(msg)
             formatMessage(msg);
             io.emit('message-update', messageList)
         })
+        // send messagelist to user
+        socket.emit('message-update', messageList)
     })
     
     // socket.broadcast.emit(username)

@@ -8,12 +8,12 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class MessagesComponent implements OnInit {
 
-  @Input() messageList:any; scrollHeight:any;
+  @Input() messageList:any; scrollHeight:any
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log(document.getElementsByClassName('.message-box'))
+
   }
 
 }

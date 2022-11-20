@@ -32,6 +32,10 @@ export class ChatComponent implements OnInit {
     time?: any
   }[]=[];
 
+  usersView:boolean=false;
+  smokeScreen:boolean=false;
+
+
   username:string='';
   room:string='';
   message: string='';
@@ -55,7 +59,8 @@ export class ChatComponent implements OnInit {
     })
     this.socket = io.io(`localhost:3000?username=${this.username}&room=${this.room}`)
 
-    this.socket.emit('connection', {username:this.username, room:this.room})
+    this.socket.emit('connection')
+    this.socket.emit('join-chat', {username:this.username, room:this.room})
 
     this.socket.on('bot-message', (message: string) => {
       this.messageList.push({
@@ -72,9 +77,9 @@ export class ChatComponent implements OnInit {
     })
 
 
-    // this.socket.on('user-list', (userlist: string[]) => {
-    //   this.userList = userlist;
-    // })
+    this.socket.on('user-list', (userlist: string[]) => {
+      this.userList = userlist;
+    })
     // this.socket.on('disconnect', (userlist: string[]) => {
     //   this.userList = userlist;
     // })
@@ -85,6 +90,11 @@ export class ChatComponent implements OnInit {
     //   }
     // })
     
+  }
+
+  view(){
+    this.usersView = !this.usersView;
+    this.smokeScreen = !this.smokeScreen;
   }
 
   sendMessage():void{
