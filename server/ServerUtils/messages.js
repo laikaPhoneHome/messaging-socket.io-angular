@@ -11,11 +11,11 @@ const timeStamp = [
 
 exports.formatMessage = (({message, username}) => {
     return({
-        message: message,
-        username: username,
-        my: false,
-        liked: false,
-        bot: false,
-        time: timeStamp,
+        "message": message,
+        "username": username,
+        "my": false,
+        "liked": false,
+        "bot": false,
+        "time": timeStamp,
     })
 })
