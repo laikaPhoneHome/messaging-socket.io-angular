@@ -1,4 +1,3 @@
-const { json } = require('express');
 const fs = require('fs/promises')
 
 exports.selectRoom = (roomName) => {
@@ -91,4 +90,17 @@ exports.removeUserByRoom = (username, roomName) => {
         fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
     })
 }
-this.removeUserByRoom('tester', 'test')
+exports.fetchUsersByRoom = (roomName) => {
+    fs.readFile(`${__dirname}/db/room.db.json`)
+    .then((data) => {
+        const db = JSON.parse(data)
+        const members = [];
+        db.roomDB.forEach((room) => {
+            if(room.roomName === roomName){
+                console.log('pushing')
+                members.push(...room.members)
+            }
+        })
+        return members
+    })
+}
