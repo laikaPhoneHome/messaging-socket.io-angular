@@ -77,4 +77,18 @@ exports.insertUserByRoom = (username, roomName) => {
         fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
     })
 }
-this.insertUserByRoom('tester', 'test')
+exports.removeUserByRoom = (username, roomName) => {
+    fs.readFile(`${__dirname}/db/room.db.json`)
+    .then((data) => {
+        const db = JSON.parse(data)
+        db.roomDB.forEach((room) => {
+            if(room.roomName === roomName){
+                const index = room.members.indexOf(username)
+                room.members.splice(index, 1)
+            }
+        })
+        const strDb = JSON.stringify(db)
+        fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
+    })
+}
+this.removeUserByRoom('tester', 'test')
