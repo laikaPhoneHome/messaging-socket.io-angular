@@ -28,10 +28,9 @@ exports.insertMessage = (message, roomName) => {
         fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
     })
 }
-const testMessage = {username: 'tester', message: 'testing'}
-exports.insertMessage(testMessage, 'test')
 exports.insertRoom = (newRoom) => {
     const { roomName, endDate } = newRoom
+    let existing;
 
     const room = {
         roomName: newRoom.roomName,
@@ -40,13 +39,22 @@ exports.insertRoom = (newRoom) => {
         messageList:[]
     }
 
-    fs.readFile(`${__dirname}/db/room.db.json`)
-    .then((data) => {
-        const newDb = JSON.parse(data)
-        newDb.roomDB.push(room)
-        const strDb = JSON.stringify(newDb)
-        fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
+    this.selectRoom(roomName)
+    .then((room) => {
+        room.length 
+        ? existing = true
+        : existing = false
     })
-
+    .then(() => {
+        if(!existing){
+            fs.readFile(`${__dirname}/db/room.db.json`)
+                .then((data) => {
+                const newDb = JSON.parse(data)
+                newDb.roomDB.push(room)
+                const strDb = JSON.stringify(newDb)
+                fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
+            })
+        }
+    })
 }
-exports.selectRoom('test').then((room) => console.log(room))
+exports.insertRoom({roomName:'test',endDate: ''})
