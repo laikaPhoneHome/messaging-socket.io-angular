@@ -16,15 +16,17 @@ export class JoinComponent implements OnInit {
     private _router: Router
     ) { }
 
-  rooms: string[] = [
-    'Room-1',
-    'Room-2',
-    'Room-3'
+  rooms: {
+    roomName: string;
+    endDate: any;
+  }[] = [
+    {roomName: 'test', endDate: Date.now()},
+    {roomName: 'Room-1', endDate: Date.now()},
+    {roomName: 'Room-2', endDate: Date.now()},
+    {roomName: 'Room-3', endDate: Date.now()}
   ]
 
-  model = new ChatUser(1,'', this.rooms[0])
-
-  joined = false;
+  model = new ChatUser('', this.rooms[0])
 
   onJoin(){
     if(this.model.username !== '')
@@ -32,9 +34,15 @@ export class JoinComponent implements OnInit {
       relativeTo: this._route,
       queryParams: {
         user: `${this.model.username}`,
-        room: `${this.model.room}`
+        room: `${this.model.room.roomName}`,
+        date: `${this.model.room.endDate}`
       },
   })
+  }
+  onChange(event:any){
+    console.log('event')
+    console.log(this.model)
+    console.log(event)
   }
 
   ngOnInit(): void {
