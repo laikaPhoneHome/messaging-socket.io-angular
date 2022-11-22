@@ -9,6 +9,7 @@ const fs = require('fs/promises');
 const {
     formatMessage,
     bot,
+    addMember,
 } = require('./ServerUtils/messages');
 const {
     selectRoom,
@@ -50,20 +51,11 @@ io.on('connection', socket => {
     
     socket.on('join-room', ({username, room}) => {
         const { roomName, endDate} = room;
+
+        addMember(username, room)
         
         // confirm room exists
-        insertRoom(room)
-
-        // add user to chat list
-        insertUserByRoom(username, roomName)
-
-        // announce to chat user has joined
-        insertMessageByRoom(
-            formatMessage({
-                message:`${username} has joined the chat`, 
-                username: bot
-            }),roomName
-        )
+        insertRoom(room, endDate)
 
         // update user's room member list
         fetchUsersByRoom(roomName)
@@ -74,19 +66,16 @@ io.on('connection', socket => {
 
         // send messagelist to user
         setTimeout(() => {
-                fetchMessagesByRoom(roomName)
+            fetchMessagesByRoom(roomName)
             .then((messages) => {
                 io.emit('message-update', messages)
             })
-        })
-        
+        },100)
         
     })
     // emit user message
     socket.on('user-message', (req) => {
-        setTimeout(() => {
-            insertMessageByRoom(formatMessage(req), roomName)
-        })
+        insertMessageByRoom(formatMessage(req), roomName)
     })
     socket.on('user-message', () => {
         setTimeout(() => {
@@ -94,10 +83,10 @@ io.on('connection', socket => {
             .then((messages) => {
                 io.emit('message-update', messages)
             })
-        })
+        },50)
+        
     })
 })
-
 
 http.listen(3000, () => {
     console.log('Listening on port 3000')

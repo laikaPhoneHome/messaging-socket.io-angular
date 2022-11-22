@@ -1,6 +1,6 @@
 <div name="message-box" class="message-box" [style.scrollHeight]="scrollHeight">
-    <div class="message" *ngFor="let msg of messageList" [ngClass]="{my: msg.my}">
-        <p><span>{{ msg.username }}</span></p>
-        <p>{{ msg.message }}</p>
+    <div class="message" *ngFor="let msg of messageList" [ngClass]="{my: msg.my, bot: msg.bot}">
+        <p class="message-content"><span>{{ msg.username }}</span>  {{ msg.message }}</p>
+        <div class="time-div"><p class="time-stamp">{{msg.time}}</p></div>
     </div>
 </div>

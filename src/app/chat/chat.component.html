@@ -6,9 +6,7 @@
                 <h3 *ngFor="let user of userList">{{ user }}</h3>
             </div>
         </section>
-        <div class="mid">
-            <app-messages [style.scrollHeight]="scrollHeight" [messageList]="messageList"></app-messages>
-        </div>
+        <app-messages [style.scrollHeight]="scrollHeight" [messageList]="messageList"></app-messages>
         <div class="message-input">
             <input type="text" [(ngModel)]="message">
             <button (click)="sendMessage()">Send</button>

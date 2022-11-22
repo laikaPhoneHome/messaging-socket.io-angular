@@ -39,6 +39,11 @@ export class JoinComponent implements OnInit {
       },
   })
   }
+  onChange(event:any){
+    console.log('event')
+    console.log(this.model)
+    console.log(event)
+  }
 
   ngOnInit(): void {
   }

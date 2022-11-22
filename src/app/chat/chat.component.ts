@@ -31,9 +31,19 @@ export class ChatComponent implements OnInit {
     bot: boolean
     time?: any
   }[]=[];
+  displayMessages: {
+    message: string, 
+    username?: string, 
+    my?: boolean, 
+    liked?: boolean, 
+    bot: boolean
+    time?: any
+  }[]=[];
+  localMessages:any;
 
   usersView:boolean=false;
   smokeScreen:boolean=false;
+  
 
 
   username:string='';
@@ -73,6 +83,9 @@ export class ChatComponent implements OnInit {
       endDate: this.eventDate
     }
 
+    this.localMessages = localStorage.getItem(`messages.${this.roomName}`)
+    this.messageList = JSON.parse(this.localMessages)
+
     this.socket = io.io(`localhost:3000?username=${this.username}&room=${this.room.roomName}`)
 
     this.socket.emit('connection')
@@ -80,19 +93,45 @@ export class ChatComponent implements OnInit {
     this.socket.emit('join-room', {username:this.username, room:this.room})
 
     this.socket.on('message-update',(currentMessages: any) => {
-      this.messageList =  currentMessages.map((message:any) => {
-        if(message.username === this.username)
-        message.my = true;
-      })
-      this.messageList = currentMessages;
+      this.recieveMessages(currentMessages)
     })
-
 
     this.socket.on('user-list', (userlist: string[]) => {
       this.userList = userlist;
     })
     
   }
+
+
+  recieveMessages(messages:any){
+    if(!messages.length){
+      localStorage.setItem(`messages.${this.roomName}`, '')
+    }
+    this.displayMessages = messages.map((message:any) => {
+        
+      if(message.username === this.username){
+        message.my = true;
+      }
+        return message;
+    })
+    this.messageList = this.displayMessages.filter((msg:any) => {
+      if(!this.messageList.includes(msg)){
+        return msg;
+      }
+    })
+
+    localStorage.setItem(`messages.${this.roomName}`, JSON.stringify(this.displayMessages))
+  }
+
+    
+    
+    // this.displayMessages.forEach((message:any) => {
+    //   if(this.messageList.includes(message)){
+    //   } else {
+    //     this.messageList.push(message)
+    //   }
+    // })
+  
 
   view(){
     this.usersView = !this.usersView;
@@ -102,7 +141,7 @@ export class ChatComponent implements OnInit {
   sendMessage():void{
     if(this.message !== '')
     this.socket.emit('user-message', {message: this.message, username: this.username})
-    this.message = ''
+    this.message = '';
   }
 
 }

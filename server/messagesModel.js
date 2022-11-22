@@ -1,13 +1,19 @@
 const fs = require('fs/promises')
+const atomic = require('atomic-file')
+const af = atomic(`${__dirname}/db/room.db.json`)
 
 exports.selectRoom = (roomName) => {
-    return fs.readFile(`${__dirname}/db/room.db.json`)
-    .then((data) => {
-        const db = JSON.parse(data);
-        const room = db.roomDB.filter(rooms => rooms.roomName === roomName);
+ 
+        return fs.readFile(`${__dirname}/db/room.db.json`)
+        .then((data) => {
+            const db = JSON.parse(data);
+            const room = db.roomDB.filter(rooms => rooms.roomName === roomName);
         return room;
+ 
     })
 }
+    
+
 exports.fetchMessagesByRoom = (roomName) => {
     return fs.readFile(`${__dirname}/db/room.db.json`)
     .then((data) => {
@@ -20,19 +26,29 @@ exports.fetchMessagesByRoom = (roomName) => {
         })
         return messages;
     })
+    
 }
 exports.insertMessageByRoom = (message, roomName) => {
-    fs.readFile(`${__dirname}/db/room.db.json`)
-    .then((data) => {
-        const db = JSON.parse(data);
-        db.roomDB.forEach((room) => {
+
+    af.get((err, data) => {
+        data.roomDB.forEach((room) => {
             if(room.roomName === roomName){
-                room.messageList.push(message);
+                if(room.messageList.length < 1){
+                    room.messageList.push(message);
+                }
+                if(room.messageList[room.messageList.length-1].message === message.message && message.bot){
+                } else {
+                    room.messageList.push(message);
+                }
             }
         })
-        const strDb = JSON.stringify(db);
-        fs.writeFile(`${__dirname}/db/room.db.json`, strDb);
+        af.set(data,(err) => {
+            if(err)
+            console.log(err)
+        })
     })
+
+    
 }
 exports.insertRoom = (newRoom) => {
     const { roomName, endDate } = newRoom;
@@ -53,28 +69,46 @@ exports.insertRoom = (newRoom) => {
     })
     .then(() => {
         if(!existing){
-            fs.readFile(`${__dirname}/db/room.db.json`)
-                .then((data) => {
-                const newDb = JSON.parse(data)
-                newDb.roomDB.push(room)
-                const strDb = JSON.stringify(newDb)
-                fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
+            af.get((err, data) => {
+                data.roomDB.push(room)
+
+                af.set(data, (err) => {
+                    if(err)
+                    console.log(err)
+                })
             })
         }
     })
 }
+
 exports.insertUserByRoom = (username, roomName) => {
-    fs.readFile(`${__dirname}/db/room.db.json`)
-    .then((data) => {
-        const db = JSON.parse(data)
-        db.roomDB.forEach((room) => {
+    af.get((err, data) => {
+        const db = {...data}
+        let members = [];
+
+        data.roomDB.forEach((room) => {
             if(room.roomName === roomName){
-                room.members.push(username)
+                members = room.members
             }
         })
-        const strDb = JSON.stringify(db)
-        fs.writeFile(`${__dirname}/db/room.db.json`, strDb)
+
+        members.push(username)
+        const newDb = db.roomDB.map((room) => {
+            if(room.roomName === roomName){
+                room.members = members;
+                return db
+            }
+        })
+        newDb[0].roomDB.forEach((room)=> {
+            console.log(room.members)
+        })
+        af.set(newDb[0], (err) => {
+            console.log(newDb)
+            if(err)
+            console.log(err)
+        })
     })
+    
 }
 exports.removeUserByRoom = (username, roomName) => {
     fs.readFile(`${__dirname}/db/room.db.json`)
