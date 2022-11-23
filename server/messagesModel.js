@@ -29,6 +29,7 @@ exports.fetchMessagesByRoom = (roomName) => {
     
 }
 exports.insertMessageByRoom = (message, roomName) => {
+    console.log(message)
 
     af.get((err, data) => {
         data.roomDB.forEach((room) => {
@@ -88,22 +89,10 @@ exports.insertUserByRoom = (username, roomName) => {
 
         data.roomDB.forEach((room) => {
             if(room.roomName === roomName){
-                members = room.members
+                room.members.push(username)
             }
         })
-
-        members.push(username)
-        const newDb = db.roomDB.map((room) => {
-            if(room.roomName === roomName){
-                room.members = members;
-                return db
-            }
-        })
-        newDb[0].roomDB.forEach((room)=> {
-            console.log(room.members)
-        })
-        af.set(newDb[0], (err) => {
-            console.log(newDb)
+        af.set(data, (err) => {
             if(err)
             console.log(err)
         })
