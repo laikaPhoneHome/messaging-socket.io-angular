@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "predeploy": "ng build; nodemon ./server/messagesController.js",
     "public": "messaging-harry",
     "ignore": [
       "firebase.json",
@@ -9,7 +10,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "src/index.html"
+        "destination": "index.html"
       }
     ]
   }
